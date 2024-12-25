@@ -26,9 +26,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            cd ~/eduardoos.com_docker
             sudo git fetch origin
             sudo git reset --hard origin/main
-            cd ~/eduardoos.com_docker
             sudo docker build -t eoserver:latest . 
             sudo docker stop eoserver_container || true 
             sudo docker rm eoserver_container || true
