@@ -33,9 +33,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-            sudo docker stop eoserver_container || true
-            sudo docker rm eoserver_container || true
-            sudo docker run -d --name eoserver_container ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+            sudo docker stop eoserver || true
+            sudo docker rm eoserver || true
+            sudo docker run -d --name eoserver ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
       - name: Wait for deployment
         run: |
