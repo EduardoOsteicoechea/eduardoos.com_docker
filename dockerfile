@@ -8,7 +8,7 @@ COPY ~/ssl/eduardoos_com.key /etc/ssl/private/
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 RUN nginx -t 
 
-COPY ui/dist /usr/share/nginx/html
+COPY ui/dist /usr/share/nginx/html 
 
 RUN chmod -R 755 usr/share/nginx/html
 RUN chmod -R 755 usr/share/nginx/html/*
