@@ -18,12 +18,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      
-      - name: Login to ECR
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          region: ${{ secrets.AWS_REGION }}
-          registry-id: ${{ secrets.AWS_ACCOUNT_ID }}
 
       - name: Connect to EC2 instance
         uses: appleboy/ssh-action@master
@@ -32,10 +26,13 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-            sudo docker stop eoserver_container || true
+            cd ~/eduardoos.com_docker
+            sudo git fetch origin
+            sudo git reset --hard origin/main
+            sudo docker build -t eoserver:latest . 
+            sudo docker stop eoserver_container || true 
             sudo docker rm eoserver_container || true
-            sudo docker run -d --name eoserver_container ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+            sudo docker run -d --name eoserver_container eoserver:latest
 
       - name: Wait for deployment
         run: |
